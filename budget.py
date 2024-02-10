@@ -1,6 +1,19 @@
-"""
+"""PDI Budget Module
+
+A module to greet your PDI Coach
+
+$ python -m pydoc budget
+
+The file can be run with:
+
+$ python -m budget
+
+or
+
+$ python budget.py
 """
 import json
+import os
 import sys
 
 def load_budget(filename: str) -> dict:
@@ -19,25 +32,40 @@ def enter_item(budget: dict, entry_type: str):
     budget["entries"].append(entry)
     print(f"Comes from enter_item: {entry_type}")
 
-def create_budget(name: str):
-    description = input("Enter a description. ")
-    print(f"Hello, I am a budget named {name}.")
+def create_budget():
+    name = input("Enter a name for the budget. ")
+    description = input(f"Enter a description for the {name} budget. ")
     result = {"name": name, "description": description, "entries": []}
     return result
 
 def disply_menu() -> str:
-    command = input("Type a command. ")
+    command = input("""
+
+Welcome to the PDI Budget Module
+
+1. Load Budget (L)
+
+2. Save Budget (S)
+
+3. Create Budget (C)
+
+4. Enter Item (E)
+
+5. Print Budget (P)
+
+6. Quit (Q)
+                     """)
     return command
 
 def main() -> int:
+    os.system('cls')
     while True:
         command = disply_menu()
         print(command)
-        if command.lower().startswith("create"):
-            cmd, name = command.split(maxsplit=1)
-            budget = create_budget(name)
-            print(budget)
-        if command.lower().startswith("enter"):
+        if command.lower().startswith("c"):
+            cmd = command
+            budget = create_budget()
+        if command.lower().startswith("e"):
             # flesh this out. what are we entering here?
             try:
                 cmd, entry_type = command.split(maxsplit=1)
@@ -47,20 +75,20 @@ def main() -> int:
                 continue
         if command.lower().startswith("q"):
             break
-        if command.lower().startswith("print"):
+        if command.lower().startswith("p"):
             try:
                 print_budget(budget)
             except UnboundLocalError:
                 print("Make a budget first!")
                 continue
-        if command.lower().startswith("load"):
+        if command.lower().startswith("l"):
             try:
                 cmd, filename = command.split(maxsplit=1)
                 budget = load_budget(filename)
             except Exception as error:
                 print(error)
                 continue
-        if command.lower().startswith("save"):
+        if command.lower().startswith("s"):
             try:
                 cmd, filename = command.split(maxsplit=1)
                 budget = save_budget(budget, filename)
