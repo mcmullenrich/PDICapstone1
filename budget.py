@@ -27,10 +27,11 @@ def print_budget(budget: dict) -> None:
     for entry in budget["entries"]:
         print(entry)
 
-def enter_item(budget: dict, entry_type: str):
-    entry = input("Enter a budget item. ")
-    budget["entries"].append(entry)
-    print(f"Comes from enter_item: {entry_type}")
+def enter_item(budget: dict):
+    entry_type = input("What type of item is it? Income or expense? ")
+    entry_category = input("What category is it? ")
+    entry_amount = input("How much was the item? ")
+    budget["entries"].append(entry_type, entry_category, entry_amount)
 
 def create_budget():
     name = input("Enter a name for the budget. ")
@@ -68,8 +69,7 @@ def main() -> int:
         if command.lower().startswith("e"):
             # flesh this out. what are we entering here?
             try:
-                cmd, entry_type = command.split(maxsplit=1)
-                enter_item(budget, entry_type)
+                enter_item(budget)
             except ValueError:
                 print("Please include an entry type.")
                 continue
