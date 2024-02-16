@@ -12,12 +12,36 @@ or
 
 $ python budget.py
 """
+from collections import namedtuple
 import json
 import os
 import sys
 
+Entry = namedtuple("Entry", "kind category amount")
+
+class Budget:
+    def __init__(self, name: str, description: str) -> None:
+        """
+        """
+        self.name = name
+        self.description = description
+        self.entries = []
+
+    def __str__(self) -> str:
+        return f"{self.name}: {self.description}"
+    
+    def save(self, filename: str) -> None:
+        """Saves the budget as a json document with a filename
+        """
+        json.dump(self.__dict__, open(filename, "w"))
+
 def load_budget(filename: str) -> dict:
-    return json.load(open(filename))
+    budget = json.load(open(filename))
+    entries = []
+    for raw in budget["entries"]:
+        entries.append(Entry(*raw))
+    budget["entries"] = entries
+    return budget
 
 def save_budget(budget: dict, filename: str) -> None:
     json.dump(budget, open(filename, "w"))
@@ -27,16 +51,17 @@ def print_budget(budget: dict) -> None:
     for entry in budget["entries"]:
         print(entry)
 
-def enter_item(budget: dict):
-    entry_type = input("What type of item is it? Income or expense? ")
+def enter_item(budget: Budget):
+    entry_kind = input("What type of item is it? Income or expense? ")
     entry_category = input("What category is it? ")
-    entry_amount = input("How much was the item? ")
-    budget["entries"].append(entry_type, entry_category, entry_amount)
+    entry_amount = float(input("How much was the item? "))
+    budget.entries.append(Entry(entry_kind, entry_category, entry_amount))
 
-def create_budget():
+def create_budget() -> Budget:
     name = input("Enter a name for the budget. ")
     description = input(f"Enter a description for the {name} budget. ")
-    result = {"name": name, "description": description, "entries": []}
+    #result = {"name": name, "description": description, "entries": []}
+    result = Budget(name, description)
     return result
 
 def disply_menu() -> str:
@@ -59,7 +84,6 @@ Welcome to the PDI Budget Module
     return command
 
 def main() -> int:
-    os.system('cls')
     while True:
         command = disply_menu()
         print(command)
@@ -70,8 +94,8 @@ def main() -> int:
             # flesh this out. what are we entering here?
             try:
                 enter_item(budget)
-            except ValueError:
-                print("Please include an entry type.")
+            except ValueError as error:
+                print(f"An error occurred while entering budget. {error}")
                 continue
         if command.lower().startswith("q"):
             break
@@ -91,7 +115,7 @@ def main() -> int:
         if command.lower().startswith("s"):
             try:
                 cmd, filename = command.split(maxsplit=1)
-                budget = save_budget(budget, filename)
+                save_budget(budget, filename)
             except Exception as error:
                 print(error)
                 continue
