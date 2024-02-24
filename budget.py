@@ -392,20 +392,20 @@ def main() -> int:
             os.system("clear")
 
     def display_help():
-        print(
-            f"""
-    {Fore.BLUE}Help:{Style.RESET_ALL}
-    - (L)oad Budget: Load a budget from a specified file. Use the 'l' command followed by the file path.
-    - (S)ave Budget: Save the current budget to a file. Use the 's' command followed by the desired file path for saving.
-    - (C)reate Budget: Start a new budget with a name, description, and date range. Follow the prompts after using the 'c' command.
-    - (E)nter Item: Add a new budget or actual income/expense item. Follow the prompts after using the 'e' command.
-    - (P)rint Budget: Display the current state of your budget with all entries listed. Simply use the 'p' command.
-    - (R)eport: Generate a report comparing budgeted and actual amounts for a specified period. Use the 'r' command and follow the prompts for date range.
-    - (W)ipe Screen: Clear the console screen to reduce clutter. Use the 'w' command.
-    - (H)elp: Display this help message for information on how to use the application. Use the 'h' command.
-    - (Q)uit: Exit the application. Use the 'q' command when you're done.
-    """
-        )
+        print(f"""
+        {Fore.BLUE}Help:{Style.RESET_ALL}
+        - (L)oad Budget: Load a budget from a specified file. Use the 'l' command and follow the prompts to specify the file path.
+        - (S)ave Budget: Save the current budget to a file. Use the 's' command and follow the prompts to specify the file path for saving.
+        - (C)reate Budget: Start a new budget with a name, description, and date range. Follow the prompts after using the 'c' command.
+        - (E)nter Item: Add a new budget or actual income/expense item to the current budget. Follow the prompts after using the 'e' command.
+        - (B)atch Upload Entries: Upload multiple budget or actual entries from an Excel file. Use the 'b' command and follow the prompts to specify the Excel file path.
+        - (P)rint Budget: Display the current state of your budget, including all entries. Use the 'p' command.
+        - (R)eport: Generate a detailed report comparing budgeted and actual amounts for a specified period. Use the 'r' command and follow the prompts to specify the date range.
+        - (W)ipe Screen: Clear the console screen to reduce clutter and improve readability. Use the 'w' command.
+        - (H)elp: Display this help message for detailed information on how to use each feature of the application. Use the 'h' command.
+        - (Q)uit: Exit the application safely. Use the 'q' command when you're finished using the program.
+        """)
+
 
     def batch_upload():
         if budget:
@@ -428,6 +428,7 @@ def main() -> int:
     }
 
     while running:
+        print("Hello world!")
         command = display_menu().lower()
         action = commands.get(command[0])
         if action:
