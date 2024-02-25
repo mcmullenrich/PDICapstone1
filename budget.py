@@ -129,14 +129,6 @@ class Budget:
         except Exception as error:
             print(f"{Fore.RED}Failed to save budget: {error}{Style.RESET_ALL}")
 
-    def print(self) -> None:
-        print(f"Budget Name: {self.name}")
-        print(f"Budget Description: {self.description}")
-        for entry in self.entries:
-            print(
-                f"{entry.entry_type.title()}: {entry.kind}, {entry.category}, {entry.amount}"
-            )
-
     def generate_report(self):
         report_start = input("Enter the start date for the report (MM/DD/YY): ")
         report_end = input("Enter the end date for the report (MM/DD/YY): ")
@@ -280,8 +272,6 @@ Welcome to the PDI Budget Module
                     
 (B)atch Upload Entries - Upload entries from an Excel file.
 
-(P)rint Budget - Display the current budget.
-                    
 (R)eport - Generate a budget vs. actual report.                  
 
 (W)ipe Screen - Clear the console screen.
@@ -379,12 +369,6 @@ def main() -> int:
         else:
             print(f"{Fore.RED}No budget to save.{Style.RESET_ALL}")
 
-    def print_budget():
-        if budget:
-            budget.print()
-        else:
-            print("No budget to print.")
-
     def wipe_screen():
         if platform.system() == "Windows":
             os.system("cls")
@@ -399,7 +383,6 @@ def main() -> int:
         - (C)reate Budget: Start a new budget with a name, description, and date range. Follow the prompts after using the 'c' command.
         - (E)nter Item: Add a new budget or actual income/expense item to the current budget. Follow the prompts after using the 'e' command.
         - (B)atch Upload Entries: Upload multiple budget or actual entries from an Excel file. Use the 'b' command and follow the prompts to specify the Excel file path.
-        - (P)rint Budget: Display the current state of your budget, including all entries. Use the 'p' command.
         - (R)eport: Generate a detailed report comparing budgeted and actual amounts for a specified period. Use the 'r' command and follow the prompts to specify the date range.
         - (W)ipe Screen: Clear the console screen to reduce clutter and improve readability. Use the 'w' command.
         - (H)elp: Display this help message for detailed information on how to use each feature of the application. Use the 'h' command.
@@ -420,7 +403,6 @@ def main() -> int:
         "e": lambda: budget and budget.enter_item(),
         "h": display_help,
         "l": load,
-        "p": print_budget,
         "q": quit,
         "r": lambda: budget and budget.generate_report(),
         "s": save,
@@ -428,7 +410,6 @@ def main() -> int:
     }
 
     while running:
-        print("Hello world!")
         command = display_menu().lower()
         action = commands.get(command[0])
         if action:
